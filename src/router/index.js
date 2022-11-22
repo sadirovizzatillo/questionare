@@ -10,9 +10,16 @@ const routes = [
     meta:{
       layout:"UserLayout"
     },
-    children: [
+  },
+  {
+    path:"/questions",
+    name:"Questions",
+    meta:{
+      layout:"UserLayout"
+    },
+    children:[
       {
-        path:"questions/:id",
+        path:":id",
         name:"PageQuestions",
         component: () => import("../views/PageQuestions.vue"),
         meta:{

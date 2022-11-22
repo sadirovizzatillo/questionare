@@ -90,11 +90,16 @@ export default{
 <style scoped>
 .user-header{
     background-color: #545c64;
+    position: fixed;
+    width: 100%;
+    z-index: 99;
 }
 .user-aside{
     background-color: #545c64;
     color: #fff;
-    height: 100vh;
+    position: fixed;
+    top: 60px;
+    z-index: 99;
 }
 .user-header__wrapper{
     display: flex;

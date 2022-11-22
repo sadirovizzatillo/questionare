@@ -1,12 +1,12 @@
 <template>
   <div class="common-layout">
-    {{ this.$route.params.id }}
+    <el-card class="box-card">
+      <div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>
+    </el-card>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
 export default {
   name: 'HomeView',
   mounted(){
