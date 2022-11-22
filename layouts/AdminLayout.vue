@@ -88,8 +88,7 @@ export default{
         },
         goQuestion(data){
             store.dispatch("questions/getSingleQuestions", data._id)
-            this.$router.push({ name: "QuestionsView", params: { id: data._id }})
-            
+            this.$router.push({ name: "QuestionsView", params: { id: data._id }}) 
         }
     }
 }

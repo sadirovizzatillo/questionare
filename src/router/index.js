@@ -10,6 +10,16 @@ const routes = [
     meta:{
       layout:"UserLayout"
     },
+    children: [
+      {
+        path:"questions/:id",
+        name:"PageQuestions",
+        component: () => import("../views/PageQuestions.vue"),
+        meta:{
+          layout:"UserLayout"
+        },
+      }
+    ]
   },
   {
     path: '/admin',

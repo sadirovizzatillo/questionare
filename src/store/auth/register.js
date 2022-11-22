@@ -28,7 +28,7 @@ export default{
                     await localStorage.setItem("user", JSON.stringify(data.user)) 
                     await localStorage.setItem("accessToken", JSON.stringify(data.accessToken))
                     await _.commit("SET_DATA", data)
-                    store.dispatch("toast/success", { title:"Tabriklaymiz!", message: `${data.username}, Savol-javob portaliga xush kelibsiz!!!`})
+                    store.dispatch("toast/success", { title:"Tabriklaymiz!", message: `${data.user.username}, Savol-javob portaliga xush kelibsiz!!!`})
                     if(data.user.isAdmin){
                         await router.push({ name: "admin" });
                         return

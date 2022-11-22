@@ -1,6 +1,6 @@
 <template>
   <div class="common-layout">
-    salom
+    {{ this.$route.params.id }}
   </div>
 </template>
 
@@ -9,5 +9,8 @@
 
 export default {
   name: 'HomeView',
+  mounted(){
+    console.log(this.$route.params.id)
+  }
 }
 </script>
