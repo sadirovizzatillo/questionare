@@ -1,6 +1,7 @@
 <template>
     <div class="common-layout">
         <el-container>
+            <div style="height:60px"></div>
             <el-header class="user-header">
                 <div class="user-header__wrapper">
                     <h3>Questionare</h3>
@@ -11,6 +12,7 @@
                 </div>
             </el-header>
             <el-container>
+                <div style="width:200px"></div>
                 <el-aside class="user-aside" width="200px">
                     <el-row class="tac">
                         <el-col>
@@ -26,23 +28,22 @@
                                     <span>Savollar</span>
                                 </template>
                                 <el-menu-item-group v-for="(type, id) in types" :key="id" >
-                                    <el-menu-item :index="id + 1" @click="goQuestion(type)">
+                                    <el-menu-item :index="1 + (id + 1)" @click="goQuestion(type)">
                                         {{type?.name}}
                                     </el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
                             <el-menu-item index="3">
-                                <span>Navigator Three</span>
+                                <span>Users</span>
                             </el-menu-item>
                             <el-sub-menu index="2">
                                 <template #title>
-                                    <span>Users</span>
+                                    <span>Text Questions</span>
                                 </template>
-                                <el-menu-item-group>
-                                    <el-menu-item index="1-1">Top answer</el-menu-item>
-                                </el-menu-item-group>
-                                <el-menu-item-group>
-                                    <el-menu-item index="1-2">All Users</el-menu-item>
+                                <el-menu-item-group v-for="(type, id) in types" :key="id" >
+                                    <el-menu-item :index="id + 1" @click="goQuestionText(type)">
+                                        {{type?.name}}
+                                    </el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
                             <el-menu-item index="4">
@@ -80,6 +81,10 @@ export default{
         goQuestion(data){
             store.dispatch("questions/getSingleQuestions", data._id)
             this.$router.push({ name: "PageQuestions", params: { id: data._id }}) 
+        },
+        goQuestionText(data){
+            store.dispatch("questions/getSingleQuestionsText", data._id)
+            this.$router.push({ name: "PageQuestionsText", params: { id: data._id }}) 
         }
     }
 }

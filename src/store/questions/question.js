@@ -59,6 +59,14 @@ export default{
             }catch(err){
                 store.dispatch("toast/error", { title: err.name, message: err.response.data })
             }
+        },
+        async getSingleQuestionsText(_, id){
+            try{
+                const { data } = await api.delete(`/textquestions/${id}`);
+                console.log(data)
+            }catch(err){
+                store.dispatch("toast/error", { title: err.name, message: err.response.data })
+            }
         }
     }
 }

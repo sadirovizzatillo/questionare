@@ -2,12 +2,15 @@
   <div class="single-questions">
     <el-card class="box-card" v-for="(question, id) in questions" :key="id">
       <h3>{{ question.title }}</h3>
-      <el-radio-group v-model="radio1">
-        <el-radio  label="Option1" size="large">Option1</el-radio>
-        <el-radio  label="sa" size="large">Option1</el-radio>
-        <el-radio  label="dasd" size="large">Option1</el-radio>
-      </el-radio-group>
-    </el-card>
+      <div class="questions-wrapper">
+        <el-radio-group v-model="question[radio]">
+          <el-radio  :label="option" size="large" v-for="(option, id) in question.options" :key="id">{{ option.name  }}</el-radio>
+        </el-radio-group>
+        <div class="question-wrapper__variants">
+          <p class="question-variant" v-for="(option, id) in question.options" :key="id"> {{   option.variant  }}</p>
+        </div>
+      </div>
+    </el-card> 
   </div>
 </template>
 
@@ -17,7 +20,7 @@ export default {
   name:"PageQuestions",
   data(){
     return{
-      radio1:''
+      radio:[]
     }
   },
   computed:{
@@ -55,6 +58,9 @@ export default {
 .single-questions .el-radio__input.is-checked+.el-radio__label{
   color: green !important;
 }
+.single-questions .el-radio__input.is-checked+.question-variant{
+  color: green !important;
+}
 .single-questions .el-radio__input.is-checked .el-radio__inner{
   background-color: #fff !important;
   border-color: green !important;
@@ -69,5 +75,19 @@ export default {
 }
 .single-questions .el-radio__input.is-checked .el-radio__inner::after{
   display: none !important;
+}
+.single-questions .questions-wrapper{
+  display: flex;
+  justify-content: space-between;
+}
+.single-questions .question-wrapper__variants{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+.single-questions .questions-wrapper p{
+  margin: 0;
+  font-size: 22px;
 }
 </style>
