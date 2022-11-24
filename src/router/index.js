@@ -25,6 +25,14 @@ const routes = [
         meta:{
           layout:"UserLayout"
         },
+      },
+      {
+        path:"textquestions/:id",
+        name:"PageQuestionsText",
+        component: () => import("../views/PageTextQuestions.vue"),
+        meta:{
+          layout:"UserLayout"
+        },
       }
     ]
   },

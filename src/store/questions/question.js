@@ -7,15 +7,24 @@ export default{
     state:{
         types:null,
         questions:null,
-        singleType:null
+        singleType:null,
+        textQuestion:null,
+        textQuestionsType:null
     },
     mutations:{
         SET_QUESTIONS_TYPE(state, types){
             state.types = types
         },
+        SET_TEXTQUESTIONS_TYPE(state, textQuestionsType){
+            state.textQuestionsType = textQuestionsType
+        },
         SET_SINGLE_QUESTION(state, question){
             state.questions = question.questions,
             state.singleType = question.type[0]
+        },
+        SET_SINGLE_TEXTQUESTION(state, textQuestion){
+            state.textQuestion = textQuestion.questions,
+            state.textQuestionsSingleType = textQuestion.type[0]
         }
     },
     actions:{
@@ -33,7 +42,7 @@ export default{
             try{
                 const { data: questions } = await api.get(`/type/${id}`);
                 if(questions){
-                   await _.commit("SET_SINGLE_QUESTION", questions)
+                    await _.commit("SET_SINGLE_QUESTION", questions)
                 } 
             }catch(err){
                 store.dispatch("toast/error", { title: err.name, message: err.response.data })
@@ -62,8 +71,21 @@ export default{
         },
         async getSingleQuestionsText(_, id){
             try{
-                const { data } = await api.delete(`/textquestions/${id}`);
-                console.log(data)
+                const { data: textQuestion } = await api.get(`/textquestionstype/${id}`);
+                console.log(textQuestion)
+                if(textQuestion){
+                    await _.commit("SET_SINGLE_TEXTQUESTION", textQuestion)
+                } 
+            }catch(err){
+                store.dispatch("toast/error", { title: err.name, message: err.response.data })
+            }
+        },
+        async getTextQuestionsType(_){
+            try{
+                const { data } = await api.get("/textquestionstype")
+                if(data){
+                    await _.commit("SET_TEXTQUESTIONS_TYPE", data)
+                }
             }catch(err){
                 store.dispatch("toast/error", { title: err.name, message: err.response.data })
             }

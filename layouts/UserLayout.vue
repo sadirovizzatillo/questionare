@@ -11,9 +11,11 @@
                     </div>
                 </div>
             </el-header>
+
             <el-container>
                 <div style="width:200px"></div>
                 <el-aside class="user-aside" width="200px">
+                    {{ textTypes }}
                     <el-row class="tac">
                         <el-col>
                             <el-menu
@@ -40,8 +42,8 @@
                                 <template #title>
                                     <span>Text Questions</span>
                                 </template>
-                                <el-menu-item-group v-for="(type, id) in types" :key="id" >
-                                    <el-menu-item :index="id + 1" @click="goQuestionText(type)">
+                                <el-menu-item-group v-for="(type, id) in textTypes" :key="id" >
+                                    <el-menu-item :index="id" @click="goQuestionText(type)">
                                         {{type?.name}}
                                     </el-menu-item>
                                 </el-menu-item-group>
@@ -68,6 +70,7 @@ export default{
     name:"UserLayout",
     async mounted(){
         await store.dispatch("questions/getQuestionsType")
+        await store.dispatch("questions/getTextQuestionsType")
     },
     computed:{
         user(){
@@ -75,6 +78,9 @@ export default{
         },
         types(){
             return store.state.questions.types
+        },
+        textTypes(){
+            return store.state.questions.textQuestionsType
         }
     },
     methods:{
@@ -83,6 +89,7 @@ export default{
             this.$router.push({ name: "PageQuestions", params: { id: data._id }}) 
         },
         goQuestionText(data){
+            console.log(data)
             store.dispatch("questions/getSingleQuestionsText", data._id)
             this.$router.push({ name: "PageQuestionsText", params: { id: data._id }}) 
         }
