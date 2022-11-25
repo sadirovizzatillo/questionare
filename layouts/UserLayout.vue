@@ -15,7 +15,6 @@
             <el-container>
                 <div style="width:200px"></div>
                 <el-aside class="user-aside" width="200px">
-                    {{ textTypes }}
                     <el-row class="tac">
                         <el-col>
                             <el-menu
@@ -89,7 +88,6 @@ export default{
             this.$router.push({ name: "PageQuestions", params: { id: data._id }}) 
         },
         goQuestionText(data){
-            console.log(data)
             store.dispatch("questions/getSingleQuestionsText", data._id)
             this.$router.push({ name: "PageQuestionsText", params: { id: data._id }}) 
         }
