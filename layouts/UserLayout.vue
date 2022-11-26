@@ -13,8 +13,8 @@
             </el-header>
 
             <el-container>
-                <div style="width:200px"></div>
-                <el-aside class="user-aside" width="200px">
+                <div style="width:230px"></div>
+                <el-aside class="user-aside" width="230px">
                     <el-row class="tac">
                         <el-col>
                             <el-menu
@@ -34,12 +34,9 @@
                                     </el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
-                            <el-menu-item index="3">
-                                <span>Users</span>
-                            </el-menu-item>
-                            <el-sub-menu index="2">
+                            <el-sub-menu index="3">
                                 <template #title>
-                                    <span>Text Questions</span>
+                                    <span>Ko'p  Savollar</span>
                                 </template>
                                 <el-menu-item-group v-for="(type, id) in textTypes" :key="id" >
                                     <el-menu-item :index="id" @click="goQuestionText(type)">
@@ -47,9 +44,17 @@
                                     </el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
-                            <el-menu-item index="4">
-                                <span>Navigator Four</span>
-                            </el-menu-item>
+                            <el-sub-menu index="2">
+                                <template #title>
+                                    <span>Text Savollar</span>
+                                </template>
+                                <el-menu-item-group v-for="(type, id) in textTypes" :key="id" >
+                                    <el-menu-item :index="id" @click="goQuestionText(type)">
+                                        {{type?.name}}
+                                    </el-menu-item>
+                                </el-menu-item-group>
+                            </el-sub-menu>
+                            
                         </el-menu>
                     </el-col>
                 </el-row>

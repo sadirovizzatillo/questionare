@@ -1,16 +1,23 @@
 <template>
   <div class="single-questions">
+    <el-empty v-if="questions?.length === 0" description="Bu mavzuga oid savollar yo'q ekan. Marhamat, boshqa savolni ishlang...">
+    </el-empty>
+
     <el-card class="box-card" v-for="(question, id) in questions" :key="id">
-      <h3>{{ question.title }}</h3>
+      <h3>{{ question?.title }}</h3>
       <div class="questions-wrapper">
-        <el-radio-group v-model="question[radio]">
-          <el-radio  :label="option" size="large" v-for="(option, id) in question.options" :key="id">{{ option.name  }}</el-radio>
-        </el-radio-group>
+        <div class="el-radio-group">
+          <el-checkbox :v-model="question[radio]" v-for="(option, id) in question?.options" :key="id">{{ option.name  }}</el-checkbox>
+        </div>
+        
         <div class="question-wrapper__variants">
-          <p class="question-variant" v-for="(option, id) in question.options" :key="id"> {{   option.variant  }}</p>
+          <p class="question-variant" v-for="(option, id) in question?.options" :key="id"> {{   option.variant  }}</p>
         </div>
       </div>
     </el-card> 
+    
+    <el-pagination v-if="questions?.length !== 0" background layout="prev, pager, next" :total="totalPage" @current-change="handleCurrentChange"/>
+    
   </div>
 </template>
 
@@ -20,19 +27,40 @@ export default {
   name:"PageQuestions",
   data(){
     return{
-      radio:[]
+      radio:'',
+      total:null
     }
+  },
+  created(){
+    const id = this.$route.params.id
+    store.dispatch("questions/getSingleQuestions", id)
   },
   computed:{
     questions(){
-      const  question  = store.state.questions.questions
+      const  question  = store.state.questions?.questions?.questions
       return question ?? null
+    },
+    totalPage(){
+      const  pages  = store.state.questions?.questions?.allPage
+      return pages ?? 3
+    }
+  },
+  
+  methods:{
+    handleCurrentChange(val){
+      const route = this.$route.params.id
+      store.dispatch("questions/getPaginateQuestions", { data: { route: route, val:val}})
     }
   }
 }
 </script>
 
 <style>
+.single-questions{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
 .single-questions .el-card{
   border-radius: 24px;
   max-width: 400px;
@@ -47,25 +75,30 @@ export default {
   grid-template-columns: 1fr;
   gap: 12px;
 }
-.single-questions .el-radio.el-radio--large .el-radio__inner{
+.single-questions .el-checkbox .el-checkbox--large .el-checkbox__inner{
   width: 30px !important;
   height: 30px !important;
   border-radius: 50% !important;
 }
-.single-questions .el-radio__inner:hover{
+.single-questions .el-checkbox__inner{
+  border-radius: 12px;
+  width: 28px;
+  height: 28px;
+}
+.single-questions .el-checkbox__inner:hover{
   border-color: none !important;
 }
-.single-questions .el-radio__input.is-checked+.el-radio__label{
+.single-questions .el-checkbox__input.is-checked+.el-checkbox__label{
   color: green !important;
 }
-.single-questions .el-radio__input.is-checked+.question-variant{
+.single-questions .el-checkbox__input.is-checked+.question-variant{
   color: green !important;
 }
-.single-questions .el-radio__input.is-checked .el-radio__inner{
+.single-questions .el-checkbox__input.is-checked .el-checkbox__inner{
   background-color: #fff !important;
   border-color: green !important;
 }
-.single-questions .el-radio__input.is-checked .el-radio__inner:before {
+.single-questions .el-checkbox__input.is-checked .el-checkbox__inner:before {
   content: "✔";
   font-family: 'lucida grande';
   font-size: 24px;
@@ -73,7 +106,7 @@ export default {
   color: green;
   text-align: center;
 }
-.single-questions .el-radio__input.is-checked .el-radio__inner::after{
+.single-questions .checkbox__input.is-checked .checkbox__inner::after{
   display: none !important;
 }
 .single-questions .questions-wrapper{

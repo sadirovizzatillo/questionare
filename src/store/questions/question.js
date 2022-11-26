@@ -19,7 +19,7 @@ export default{
             state.textQuestionsType = textQuestionsType
         },
         SET_SINGLE_QUESTION(state, question){
-            state.questions = question.questions,
+            state.questions = question,
             state.singleType = question.type[0]
         },
         SET_SINGLE_TEXTQUESTION(state, textQuestion){
@@ -89,6 +89,15 @@ export default{
             }catch(err){
                 store.dispatch("toast/error", { title: err.name, message: err.response.data })
             }
-        }
+        },
+        async getPaginateQuestions(_, data){
+            try {
+                console.log(data)
+                const { data: question } = await api.get(`/type/${data.data.route}?page=${data.data.val}&limit=3`);
+                await _.commit("SET_SINGLE_QUESTION", question)
+            } catch (err) {
+                store.dispatch("toast/error", { title: err.name, message: err.response.data })
+            }
+        }   
     }
 }
