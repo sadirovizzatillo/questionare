@@ -88,6 +88,9 @@ export default{
         }
     },
     methods:{
+        logout(){
+            store.dispatch("register/logout")
+        },
         goQuestion(data){
             store.dispatch("questions/getSingleQuestions", data._id)
             this.$router.push({ name: "PageQuestions", params: { id: data._id }}) 

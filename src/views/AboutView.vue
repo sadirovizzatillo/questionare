@@ -1,7 +1,7 @@
 <template>
   <header class="question-single__type">
     <h3>{{ singleType?.name }}</h3>
-    <el-button type="primary">Add Question</el-button>
+    <el-button type="primary" @click="AddQuestion">Add Question</el-button>
   </header>
   
   <el-table :data="questions" style="width: 100%">
@@ -23,7 +23,9 @@
     </el-table-column>
     <el-table-column label="Correct Answer">
       <template #default="scope">
-        <div>{{ scope.row.correct ?? 'javob' }}</div>
+        <div class="corrects">
+          <p v-for="(answer, id) in scope.row.answer" :key="id">{{ answer ?? 'javob' }}</p>
+        </div>
       </template>
     </el-table-column>
     <el-table-column label="Operations" >
@@ -51,8 +53,8 @@
       <el-form-item label="Edit Title">
         <el-input type="text" placeholder="Title" v-model="editTitle"></el-input>
       </el-form-item>
-      <el-form-item label="Edit Options">
-        <el-input type="text" placeholder="Options" v-model="editOptions"></el-input>
+      <el-form-item :label="opt.variant" v-for="(opt, id) in editOptions" :key="id">
+        <el-input type="text" placeholder="Options" v-model="opt.name"></el-input>
       </el-form-item>
     </el-form>
     
@@ -73,6 +75,7 @@
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { computed } from '@vue/reactivity';
+import router from '@/router';
 const store = useStore()
 const isDelete = ref(false)
 const isEdit = ref(false)
@@ -80,10 +83,13 @@ const editTitle = ref(null)
 const editOptions = ref(null)
 const editId = ref(null)
 const editModal = ref(false)
+const editTypeId = ref(null)
+
 const questions = computed(() => {
-  const  question  = store.state.questions.questions
+  const  question  = store.state.questions?.questions?.questions
   return question ?? null
 })
+
 const singleType = computed(() => {
   const  type  = store.state.questions.singleType
   return type ?? null
@@ -107,6 +113,7 @@ const questionModal = (data) => {
       editTitle.value = data.val.title
       editOptions.value = data.val.options
       editId.value = data.val._id
+      editTypeId.value = data.val.type_id
     }
   }
 }
@@ -122,14 +129,28 @@ const editQuestion = () => {
   store.dispatch("questions/editQuestions", { 
     options:editOptions.value, 
     title:editTitle.value,
-    id:id
+    _id:id,
+    type_id:editTypeId.value
   })
-  isDelete.value = false
   isEdit.value = false
+  isDelete.value = false
+}
+
+const AddQuestion = () => {
+  router.push({ name: "addQuestion" })
 }
 </script>
 
 <style scoped>
+.corrects{
+  display: flex;
+}
+
+.corrects p:first-child::after{
+  content: ",";
+  margin-right: 8px;
+}
+
 .question-single__type{
   display: flex;
   justify-content: space-between;

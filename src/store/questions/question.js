@@ -41,6 +41,7 @@ export default{
         async getSingleQuestions(_, id){
             try{
                 const { data: questions } = await api.get(`/type/${id}`);
+                console.log(questions)
                 if(questions){
                     await _.commit("SET_SINGLE_QUESTION", questions)
                 } 
@@ -50,13 +51,13 @@ export default{
         },
         async editQuestions(_, data){
             try{
-                const { data: question } = await api.put(`/questions/${data.id}`, { 
+                const { data: question } = await api.put(`/questions/${data._id}`, { 
                     title: data.title,
                     options: data.options
                 }) 
-                console.log(question)
+                console.log(data, question)
                 await _.dispatch("getQuestionsType")
-                await _.dispatch("getSingleQuestions")
+                await _.dispatch("getSingleQuestions", data.type_id)
             }catch(err){
                 store.dispatch("toast/error", { title: err.name, message: err.response.data })
             }
@@ -72,7 +73,6 @@ export default{
         async getSingleQuestionsText(_, id){
             try{
                 const { data: textQuestion } = await api.get(`/textquestionstype/${id}`);
-                console.log(textQuestion)
                 if(textQuestion){
                     await _.commit("SET_SINGLE_TEXTQUESTION", textQuestion)
                 } 

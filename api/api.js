@@ -8,7 +8,7 @@ const api = axios.create({
     },
 });
 function getLocalAccessToken() {
-    const accessToken = window.localStorage.getItem("accessToken");
+    const accessToken = JSON.parse(window.localStorage.getItem("accessToken")) 
     return accessToken;
 }
 function getLocalRefreshToken() {

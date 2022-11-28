@@ -7,7 +7,7 @@
       <h3>{{ question?.title }}</h3>
       <div class="questions-wrapper">
         <div class="el-radio-group">
-          <el-checkbox :v-model="question[radio]" v-for="(option, id) in question?.options" :key="id">{{ option.name  }}</el-checkbox>
+          <el-checkbox :v-model="radio[question._id]" @change="handleRadioChange(option)" v-for="(option, id) in question?.options" :key="id">{{ option.name  }}</el-checkbox>
         </div>
         
         <div class="question-wrapper__variants">
@@ -27,7 +27,7 @@ export default {
   name:"PageQuestions",
   data(){
     return{
-      radio:'',
+      radio:[],
       total:null
     }
   },
@@ -38,7 +38,7 @@ export default {
   computed:{
     questions(){
       const  question  = store.state.questions?.questions?.questions
-      return question ?? null
+      return question ?? null 
     },
     totalPage(){
       const  pages  = store.state.questions?.questions?.allPage
@@ -50,6 +50,10 @@ export default {
     handleCurrentChange(val){
       const route = this.$route.params.id
       store.dispatch("questions/getPaginateQuestions", { data: { route: route, val:val}})
+    },
+    handleRadioChange(data){
+      console.log(data)
+      // console.log(this.radio)
     }
   }
 }

@@ -1,51 +1,65 @@
 <template>
     <div>
-        <el-table :data="questions" style="width: 100%">
-            <el-table-column label="Date" width="180">
-                <template #default="scope">
-                    <div style="display: flex; align-items: center">
-                        <el-icon><timer /></el-icon>
-                        <span style="margin-left: 10px">{{ scope.row.date }}</span>
+        <h2 style="text-align: left;">Ko'p beriladigan savollar</h2>
+        <div class="demo-collapse">
+            <el-collapse v-model="activeNames" @change="handleChange">
+                <el-collapse-item title="Consistency" name="1">
+                    <div>
+                        Consistent with real life: in line with the process and logic of real
+                        life, and comply with languages and habits that the users are used to;
                     </div>
-                </template>
-            </el-table-column>
-            <el-table-column label="Name" width="180">
-                <template #default="scope">
-                    <el-popover effect="light" trigger="hover" placement="top" width="auto">
-                        <template #default>
-                            <div>name: {{ scope.row.name }}</div>
-                            <div>address: {{ scope.row.address }}</div>
-                        </template>
-                        <template #reference>
-                            <el-tag>{{ scope.row.name }}</el-tag>
-                        </template>
-                    </el-popover>
-                </template>
-            </el-table-column>
-            <el-table-column label="Operations">
-                <template #default="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
-                    >Edit</el-button
-                    >
-                    <el-button
-                    size="small"
-                    type="danger"
-                    @click="handleDelete(scope.$index, scope.row)"
-                    >Delete</el-button
-                    >
-                </template>
-            </el-table-column>
-        </el-table>
+                    <div>
+                        Consistent within interface: all elements should be consistent, such
+                        as: design style, icons and texts, position of elements, etc.
+                    </div>
+                </el-collapse-item>
+                <el-collapse-item title="Feedback" name="2">
+                    <div>
+                        Operation feedback: enable the users to clearly perceive their
+                        operations by style updates and interactive effects;
+                    </div>
+                    <div>
+                        Visual feedback: reflect current state by updating or rearranging
+                        elements of the page.
+                    </div>
+                </el-collapse-item>
+                <el-collapse-item title="Efficiency" name="3">
+                    <div>
+                        Simplify the process: keep operating process simple and intuitive;
+                    </div>
+                    <div>
+                        Definite and clear: enunciate your intentions clearly so that the
+                        users can quickly understand and make decisions;
+                    </div>
+                    <div>
+                        Easy to identify: the interface should be straightforward, which helps
+                        the users to identify and frees them from memorizing and recalling.
+                    </div>
+                </el-collapse-item>
+                <el-collapse-item title="Controllability" name="4">
+                    <div>
+                        Decision making: giving advices about operations is acceptable, but do
+                        not make decisions for the users;
+                    </div>
+                    <div>
+                        Controlled consequences: users should be granted the freedom to
+                        operate, including canceling, aborting or terminating current
+                        operation.
+                    </div>
+                </el-collapse-item>
+            </el-collapse>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
-import { computed } from '@vue/reactivity';
-const store = useStore()
-const questions = computed(() => {
-    return store.state.questions.questions ?? null
-})
+import { ref } from 'vue'
+
+const activeNames = ref(['1'])
+const handleChange = (val) => {
+    console.log(val)
+}
+
 </script>
 
 <style>

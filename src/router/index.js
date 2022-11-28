@@ -39,20 +39,26 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: () => import('../views/AboutView.vue'),
+    component: () => import('../views/Admin/QuestionsView.vue'),
     meta:{
       layout:"AdminLayout"
     },
-    children: [
-      {
-        path:"question/:id",
-        name:"QuestionsView",
-        component: () => import("../views/Admin/QuestionsView.vue"),
-        meta:{
-          layout:"AdminLayout"
-        },
-      }
-    ]
+  },
+  {
+    path:"/admin/question/:id",
+    name:"QuestionsView",
+    component: () => import("../views/AboutView.vue"),
+    meta:{
+      layout:"AdminLayout"
+    },
+  },
+  {
+    path:"/add-question",
+    name:"addQuestion",
+    component: () => import("../views/Admin/AddQuestions.vue"),
+    meta:{
+      layout:"AdminLayout"
+    },
   },
   {
     path: '/register',
@@ -80,7 +86,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!localStorage.getItem("user")
-  console.log(to.meta.layout)
   if (to.meta.layout !== 'AuthLayout' && !isAuthenticated) next({ name: 'login' })
   else next()
 })  
