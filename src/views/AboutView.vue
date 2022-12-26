@@ -1,7 +1,7 @@
 <template>
   <header class="question-single__type">
     <h3>{{ singleType?.name }}</h3>
-    <el-button type="primary" @click="AddQuestion">Add Question</el-button>
+    <el-button type="primary" @click="AddQuestion($route.params.id)">Add Question</el-button>
   </header>
   
   <el-table :data="questions" style="width: 100%">
@@ -136,9 +136,11 @@ const editQuestion = () => {
   isDelete.value = false
 }
 
-const AddQuestion = () => {
+const AddQuestion = (id) => {
+  store.dispatch("questions/setQuestionId", id)
   router.push({ name: "addQuestion" })
 }
+
 </script>
 
 <style scoped>

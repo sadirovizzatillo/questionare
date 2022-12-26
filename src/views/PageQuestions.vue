@@ -2,12 +2,11 @@
   <div class="single-questions">
     <el-empty v-if="questions?.length === 0" description="Bu mavzuga oid savollar yo'q ekan. Marhamat, boshqa savolni ishlang...">
     </el-empty>
-
     <el-card class="box-card" v-for="(question, id) in questions" :key="id">
       <h3>{{ question?.title }}</h3>
       <div class="questions-wrapper">
-        <div class="el-radio-group">
-          <el-checkbox :v-model="radio[question._id]" @change="handleRadioChange(option)" v-for="(option, id) in question?.options" :key="id">{{ option.name  }}</el-checkbox>
+        <div class="el-radio-group" >
+          <el-checkbox @change="handleRadioChange({ option: option, question: question})" v-for="(option, id) in question?.options" :value="option" :key="id">{{ option.name  }}</el-checkbox>
         </div>
         
         <div class="question-wrapper__variants">
@@ -15,7 +14,11 @@
         </div>
       </div>
     </el-card> 
-    
+    <div>
+      <el-button type="primary" @click="sendAnswers">
+        Confirm
+      </el-button>
+    </div>
     <el-pagination v-if="questions?.length !== 0" background layout="prev, pager, next" :total="totalPage" @current-change="handleCurrentChange"/>
     
   </div>
@@ -52,8 +55,36 @@ export default {
       store.dispatch("questions/getPaginateQuestions", { data: { route: route, val:val}})
     },
     handleRadioChange(data){
-      console.log(data)
-      // console.log(this.radio)
+      var isEqual = false
+      const user_id = JSON.parse(localStorage.getItem("user"))
+      const form = {
+        _id: data.question._id,
+        variant: data.option.variant,
+        name: data.option.name,
+        type_id: data.question.type_id,
+        answer: [data.option.variant],
+        user_id:user_id._id
+      }
+      
+      this.radio.forEach(item => {
+        if(item._id === form._id){
+          item.answer.push(form.variant)
+          isEqual = true
+        }
+      })
+      this.radio.forEach((item) => {
+        if(item._id === form._id && item.variant === form.variant){
+          const indexData = this.radio.indexOf(item)
+          this.radio.splice(indexData, 1)
+          isEqual = true
+        }
+      })
+      if(isEqual === false){
+        this.radio.push(form)
+      }
+    },
+    sendAnswers(){
+      store.dispatch("check/sendAnswers", this.radio)
     }
   }
 }

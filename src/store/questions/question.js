@@ -5,6 +5,7 @@ import store from "..";
 export default{
     namespaced:true,
     state:{
+        routeId:null,
         types:null,
         questions:null,
         singleType:null,
@@ -12,6 +13,9 @@ export default{
         textQuestionsType:null
     },
     mutations:{
+        setRouteId(state, id){
+            state.routeId = id
+        },
         SET_QUESTIONS_TYPE(state, types){
             state.types = types
         },
@@ -41,7 +45,6 @@ export default{
         async getSingleQuestions(_, id){
             try{
                 const { data: questions } = await api.get(`/type/${id}`);
-                console.log(questions)
                 if(questions){
                     await _.commit("SET_SINGLE_QUESTION", questions)
                 } 
@@ -98,6 +101,18 @@ export default{
             } catch (err) {
                 store.dispatch("toast/error", { title: err.name, message: err.response.data })
             }
-        }   
+        },
+        async addQuestion(_, payload){
+            try{
+                const { data } = await api.post("/questions", payload);
+                console.log(data)
+                await _.dispatch("getSingleQuestions", payload.type_id)
+            }catch(err){
+                store.dispatch("toast/error", { title: err.name, message: err.response.data })
+            }
+        },
+         setQuestionId(_, id){
+            _.commit("setRouteId", id)
+        }
     }
 }

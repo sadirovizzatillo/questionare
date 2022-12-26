@@ -1,7 +1,7 @@
 <template>
   <div class="single-questions">
     <el-card class="box-card" v-for="question in questions" :key="question">
-      <h3 v-html="question.text" @click="getAnswers(question)"></h3>
+      <h3 v-html="question.text" @change="getAnswers($event)"></h3>
     </el-card> 
   </div>
 </template>
@@ -17,8 +17,8 @@ export default {
     }
   },
   methods:{
-    getAnswers(q){
-      console.log(q)
+    getAnswers(e){
+      console.log(e.target.value)
     }
   },
   computed:{

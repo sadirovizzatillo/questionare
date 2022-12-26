@@ -53,6 +53,14 @@ const routes = [
     },
   },
   {
+    path:"/users",
+    name:"AllUsers",
+    component: () => import("../views/Admin/UsersView.vue"),
+    meta:{
+      layout:"AdminLayout"
+    },
+  },
+  {
     path:"/add-question",
     name:"addQuestion",
     component: () => import("../views/Admin/AddQuestions.vue"),
@@ -86,8 +94,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!localStorage.getItem("user")
-  if (to.meta.layout !== 'AuthLayout' && !isAuthenticated) next({ name: 'login' })
-  else next()
+  // const { isAdmin } = JSON.parse(localStorage.getItem("user")) 
+  if (to.meta.layout !== 'AuthLayout' && !isAuthenticated){
+    next({ name: 'login' })
+  } else {
+    next()
+  }
 })  
 
 export default router

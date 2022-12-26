@@ -41,7 +41,7 @@
                                     <el-menu-item index="1-1">Top answer</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group>
-                                    <el-menu-item index="1-2">All Users</el-menu-item>
+                                    <el-menu-item index="1-2" @click="getAllUser">All Users</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
                             <el-menu-item index="4">
@@ -88,6 +88,10 @@ export default{
         goQuestion(data){
             store.dispatch("questions/getSingleQuestions", data._id)
             this.$router.push({ name: "QuestionsView", params: { id: data._id }}) 
+        },
+        getAllUser(){
+            this.$router.push({ name: "AllUsers" })
+            store.dispatch("users/getAllUsers")
         }
     }
 }
